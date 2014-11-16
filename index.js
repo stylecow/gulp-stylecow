@@ -25,12 +25,15 @@ module.exports = function (options) {
     }
 
     var code = new stylecow.Code(css, {
+      file: file.relative,
       style: options.code,
+      previousSourceMap: file.sourceMap,
       sourceMap: file.sourceMap ? true : false
     });
 
     if (code.map && file.sourceMap) {
-      applySourceMap(file, code.map.toString());
+      code.map.file = file.sourceMap.file;
+      applySourceMap(file, code.map);
     }
 
     file.contents = new Buffer(code.code);
