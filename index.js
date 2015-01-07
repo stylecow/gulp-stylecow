@@ -5,8 +5,23 @@ var applySourceMap = require('vinyl-sourcemaps-apply');
 var PluginError = gutil.PluginError;
 var path = require('path');
 
-module.exports = function (options) {
-  stylecow.setConfig(options);
+module.exports = function (config) {
+
+  if (config.support) {
+      stylecow.minSupport(config.support);
+  }
+
+  if (config.plugins) {
+      config.plugins.forEach(function (plugin) {
+          stylecow.loadPlugin(plugin);
+      });
+  }
+
+  if (config.modules) {
+      config.modules.forEach(function (module) {
+          stylecow.loadNpmModule(module);
+      });
+  }
 
   function transform(file, enc, cb) {
     if (file.isNull()) return cb(null, file); 
@@ -15,18 +30,14 @@ module.exports = function (options) {
     stylecow.cwd(path.dirname(file.path));
 
     try {
-      var css = stylecow.convert(file.contents.toString('utf8'));
-
-      if (file.sourceMap && file.sourceMap.sources.length) {
-        css.setData('sourceFile', file.relative);
-      }
+      var css = stylecow.Root.create(new stylecow.Reader(file.contents.toString('utf8')), file.relative);
     } catch (err) {
       return cb(new PluginError('gulp-stylecow', err));
     }
 
     var code = new stylecow.Code(css, {
       file: file.relative,
-      style: options.code,
+      style: config.code,
       previousSourceMap: file.sourceMap,
       sourceMap: file.sourceMap ? true : false
     });
