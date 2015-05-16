@@ -1,0 +1,30 @@
+{
+	"files": [{
+		"input": "styles.css",
+		"output": "../expected/styles.css"
+	}],
+	"support": {
+		"explorer": 8,
+		"firefox": 30,
+		"chrome": 35,
+		"safari": 6,
+		"opera": 22,
+		"android": 4,
+		"ios": 6
+	},
+	"plugins": [
+		"color",
+		"fixes",
+		"flex",
+		"matches",
+		"import",
+		"msfilter-background-alpha",
+		"msfilter-linear-gradient",
+		"msfilter-transform",
+		"nested-rules",
+		"prefixes",
+		"rem",
+		"variables"
+	],
+	"code": "minify"
+}

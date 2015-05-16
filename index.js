@@ -30,12 +30,13 @@ module.exports = function (config) {
     stylecow.cwd(path.dirname(file.path));
 
     try {
-      var css = stylecow.Root.create(new stylecow.Reader(file.contents.toString('utf8')), file.relative);
+      var css = stylecow.parse(file.contents.toString('utf8'), undefined, undefined, file.relative);
+      stylecow.run(css);
     } catch (err) {
       return cb(new PluginError('gulp-stylecow', err));
     }
 
-    var code = new stylecow.Code(css, {
+    var code = new stylecow.Coder(css, {
       file: file.relative,
       style: config.code,
       previousSourceMap: file.sourceMap,
