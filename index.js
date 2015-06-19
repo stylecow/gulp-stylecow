@@ -1,5 +1,5 @@
 var through = require('through2');
-var stylecow = require('stylecow');
+var stylecow = require('stylecow-core');
 var gutil = require('gulp-util');
 var applySourceMap = require('vinyl-sourcemaps-apply');
 var PluginError = gutil.PluginError;
@@ -13,7 +13,7 @@ module.exports = function (config) {
 
   if (config.plugins) {
       config.plugins.forEach(function (plugin) {
-          stylecow.loadPlugin(plugin);
+          stylecow.loadNpmModule('stylecow-plugin-' + plugin);
       });
   }
 
