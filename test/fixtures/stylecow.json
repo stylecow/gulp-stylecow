@@ -13,11 +13,16 @@
 		"ios": 6
 	},
 	"plugins": [
+		"calc",
 		"color",
+		"custom-media",
+		"custom-selector",
+		"extend",
 		"fixes",
 		"flex",
 		"matches",
 		"import",
+		"matches",
 		"msfilter-background-alpha",
 		"msfilter-linear-gradient",
 		"msfilter-transform",

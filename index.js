@@ -1,54 +1,57 @@
-var through = require('through2');
-var stylecow = require('stylecow-core');
-var gutil = require('gulp-util');
-var applySourceMap = require('vinyl-sourcemaps-apply');
-var PluginError = gutil.PluginError;
-var path = require('path');
+"use strict";
+
+var through        = require('through2'),
+    stylecow       = require('stylecow-core'),
+    gutil          = require('gulp-util'),
+    applySourceMap = require('vinyl-sourcemaps-apply'),
+    PluginError    = gutil.PluginError,
+    path           = require('path');
 
 module.exports = function (config) {
+  var tasks = new stylecow.Tasks();
+  var coder = new stylecow.Coder(config.code);
 
   if (config.support) {
-      stylecow.minSupport(config.support);
+      tasks.minSupport(config.support);
   }
 
   if (config.plugins) {
       config.plugins.forEach(function (plugin) {
-          stylecow.loadNpmModule('stylecow-plugin-' + plugin);
+          tasks.use(require('stylecow-plugin-' + plugin));
       });
   }
 
   if (config.modules) {
       config.modules.forEach(function (module) {
-          stylecow.loadNpmModule(module);
+          tasks.use(require(module));
       });
   }
 
-  function transform(file, enc, cb) {
-    if (file.isNull()) return cb(null, file); 
-    if (file.isStream()) return cb(new PluginError('gulp-stylecow', 'Streaming not supported'));
+  function transform (file, enc, cb) {
+    if (file.isNull()) {
+      return cb(null, file);
+    }
 
-    stylecow.cwd(path.dirname(file.path));
+    if (file.isStream()) {
+      return cb(new PluginError('gulp-stylecow', 'Streaming not supported'));
+    }
 
     try {
-      var css = stylecow.parse(file.contents.toString('utf8'), undefined, undefined, file.relative);
-      stylecow.run(css);
+      var css = stylecow.parse(file.contents.toString('utf8'), 'Root', null, file.path);
+      tasks.run(css);
     } catch (err) {
       return cb(new PluginError('gulp-stylecow', err));
     }
 
-    var code = new stylecow.Coder(css, {
-      file: file.relative,
-      style: config.code,
-      previousSourceMap: file.sourceMap,
-      sourceMap: file.sourceMap ? true : false
-    });
+    var code = coder.run(css, file.relative, file.sourceMap ? true : false, file.sourceMap);
 
     if (code.map && file.sourceMap) {
-      code.map.file = file.sourceMap.file;
+      let map = JSON.parse(code.map);
+      map.file = file.sourceMap.file;
       applySourceMap(file, code.map);
     }
 
-    file.contents = new Buffer(code.code);
+    file.contents = new Buffer(code.css);
     cb(null, file);
   }
 
