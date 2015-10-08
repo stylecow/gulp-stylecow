@@ -6,9 +6,10 @@ var through        = require('through2'),
     gutil          = require('gulp-util'),
     applySourceMap = require('vinyl-sourcemaps-apply'),
     PluginError    = gutil.PluginError,
-    path           = require('path');
+    path           = require('path'),
+    rename         = require('gulp-rename');
 
-module.exports = function (config) {
+function Plugin (config) {
   var tasks = new stylecow.Tasks();
   var coder = new stylecow.Coder(config.code);
 
@@ -54,3 +55,19 @@ module.exports = function (config) {
 
   return through.obj(transform);
 };
+
+Plugin.load = function (config) {
+  return {
+    input: function () {
+      return config.files[0].input;
+    },
+    run: function () {
+      return Plugin(config);
+    },
+    output: function () {
+      return rename(config.files[0].output);
+    }
+  }
+};
+
+module.exports = Plugin;
