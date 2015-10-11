@@ -10,19 +10,19 @@
 var stylecow = require('gulp-stylecow');
 
 gulp.task('stylecow', function() {
-  gulp.src('./src/*.css')
-    .pipe(stylecow({
-        code: 'minify',
-        plugins: [
-            'color',
-            'variables',
-            'import',
-            'flex',
-            'prefixes',
-            'fixes'
-        ]
-    }))
-    .pipe(gulp.dest('./public/'))
+    gulp.src('./src/*.css')
+        .pipe(stylecow({
+            code: 'minify',
+            plugins: [
+                'color',
+                'variables',
+                'import',
+                'flex',
+                'prefixes',
+                'fixes'
+            ]
+        }))
+        .pipe(gulp.dest('./public/'));
 });
 ```
 
