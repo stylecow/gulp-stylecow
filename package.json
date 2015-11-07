@@ -26,9 +26,9 @@
     "test": "mocha test/stylecow_test.js"
   },
   "dependencies": {
-    "gulp-util": "^3.0.6",
-    "stylecow-core": "^2.0.1",
-    "stylecow-plugins": "^1.0.0",
+    "gulp-util": "^3.0.7",
+    "stylecow-core": "^2.1.1",
+    "stylecow-plugins": "^1.2.0",
     "through2": "^0.6.1",
     "vinyl-sourcemaps-apply": "^0.1.3"
   },
