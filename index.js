@@ -9,8 +9,8 @@ var through        = require('through2'),
     path           = require('path');
 
 module.exports = function (config) {
-  var tasks = new stylecow.Tasks();
-  var coder = new stylecow.Coder(config.code);
+  let tasks = new stylecow.Tasks();
+  let coder = new stylecow.Coder(config.code);
 
   if (config.support) {
       tasks.minSupport(config.support);
@@ -33,19 +33,28 @@ module.exports = function (config) {
       return cb(new PluginError('gulp-stylecow', 'Streaming not supported'));
     }
 
+    let css, code, map;
+
     try {
-      var css = stylecow.parse(file.contents.toString('utf8'), 'Root', null, file.path);
+      css = stylecow.parse(file.contents.toString('utf8'), 'Root', null, file.path);
       tasks.run(css);
     } catch (err) {
       return cb(new PluginError('gulp-stylecow', err));
     }
 
-    var code = coder.run(css, file.relative, file.sourceMap ? true : false, file.sourceMap);
+    if (file.sourceMap) {
+      coder.sourceMap('none');
+      code = coder.run(css, file.relative, file.sourceMap);
 
-    if (code.map && file.sourceMap) {
-      let map = JSON.parse(code.map);
+      map = JSON.parse(code.map);
       map.file = file.sourceMap.file;
       applySourceMap(file, map);
+    } else {
+      if (config.map) {
+        coder.sourceMap(config.map);
+      }
+
+      code = coder.run(css);
     }
 
     file.contents = new Buffer(code.css);
