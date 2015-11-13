@@ -45,7 +45,7 @@ module.exports = function (config) {
     if (code.map && file.sourceMap) {
       let map = JSON.parse(code.map);
       map.file = file.sourceMap.file;
-      applySourceMap(file, code.map);
+      applySourceMap(file, map);
     }
 
     file.contents = new Buffer(code.css);
