@@ -73,6 +73,9 @@ module.exports.src = function(files) {
             return resolved.push(file);
         }
 
+        let baseDir = file.input.split('/*', 2);
+        baseDir = baseDir.length === 2 ? baseDir[0].length + 1 : 0;
+
         glob
             .sync(file.input)
             .forEach(function (input) {
@@ -81,7 +84,7 @@ module.exports.src = function(files) {
                 resolved.push({
                     input: input,
                     output: file.output
-                        .replace('[dir]', info.dir)
+                        .replace('[dir]', info.dir.substr(baseDir))
                         .replace('[base]', info.base)
                         .replace('[ext]', info.ext)
                         .replace('[name]', info.name)
