@@ -40,7 +40,11 @@ module.exports = function (config) {
             css = stylecow.parse(file.contents.toString('utf8'), 'Root', null, file.path);
             tasks.run(css);
         } catch (err) {
-            return cb(new PluginError('gulp-stylecow', err));
+            if (!config.cssErrors) {
+                return cb(new PluginError('gulp-stylecow', err));
+            }
+
+            css = stylecow.cssError(err);
         }
 
         if (file.sourceMap) {
