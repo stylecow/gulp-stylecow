@@ -1,7 +1,7 @@
 {
   "name": "gulp-stylecow",
   "description": "Transform css files using stylecow",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "homepage": "http://github.com/stylecow/gulp-stylecow",
   "author": {
     "name": "oscarotero",
