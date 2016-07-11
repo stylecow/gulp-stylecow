@@ -26,7 +26,7 @@ gulp.task('stylecow', function() {
 });
 ```
 
-### Using stylecow.json
+### Using stylecow.json file
 
 ```js
 var stylecow = require('gulp-stylecow'),
@@ -35,7 +35,7 @@ var stylecow = require('gulp-stylecow'),
 gulp.task('stylecow', function() {
     var config = require('./stylecow.json');
 
-    config.files.forEach(function (file) {
+    stylecow.src(config.files).forEach(function (file) {
         gulp.src(file.input)
             .pipe(stylecow(config))
             .pipe(rename(file.output))
