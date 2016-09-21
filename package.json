@@ -1,7 +1,7 @@
 {
   "name": "gulp-stylecow",
   "description": "Transform css files using stylecow",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "homepage": "http://github.com/stylecow/gulp-stylecow",
   "author": {
     "name": "oscarotero",
@@ -26,14 +26,14 @@
     "test": "mocha test/stylecow_test.js"
   },
   "dependencies": {
-    "glob": "^7.0.5",
+    "glob": "^7.1.0",
     "gulp-util": "^3.0.7",
-    "stylecow-core": "^2.3.0",
-    "stylecow-plugins": "^1.5.1",
+    "stylecow-core": "^2.4.0",
+    "stylecow-plugins": "^1.5.2",
     "through2": "^2.0.1",
     "vinyl-sourcemaps-apply": "^0.2.1"
   },
   "devDependencies": {
-    "mocha": "^2.5.3"
+    "mocha": "^3.0.2"
   }
 }
